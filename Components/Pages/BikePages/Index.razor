@@ -1,0 +1,41 @@
+﻿@page "/bikes"
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using BlazorBikeStore.Models
+@using BlazorBikeStore.Data
+@implements IAsyncDisposable
+@inject IDbContextFactory<BlazorBikeStore.Data.BlazorBikeStoreContext> DbFactory
+
+<PageTitle>Index</PageTitle>
+
+<h1>Index</h1>
+
+<p>
+    <a href="bikes/create">Create New</a>
+</p>
+
+<QuickGrid Class="table" Items="context.Bike">
+    <PropertyColumn Property="bike => bike.Manufacturer" />
+    <PropertyColumn Property="bike => bike.Model" />
+    <PropertyColumn Property="bike => bike.Year" />
+    <PropertyColumn Property="bike => bike.Price" />
+    <PropertyColumn Property="bike => bike.CreatedOn" />
+    <PropertyColumn Property="bike => bike.Rating" />
+
+    <TemplateColumn Context="bike">
+        <a href="@($"bikes/edit?bikeid={bike.BikeId}")">Edit</a> |
+        <a href="@($"bikes/details?bikeid={bike.BikeId}")">Details</a> |
+        <a href="@($"bikes/delete?bikeid={bike.BikeId}")">Delete</a>
+    </TemplateColumn>
+</QuickGrid>
+
+@code {
+    private BlazorBikeStoreContext context = default!;
+
+    protected override void OnInitialized()
+    {
+        context = DbFactory.CreateDbContext();
+    }
+
+    public async ValueTask DisposeAsync() => await context.DisposeAsync();
+}
