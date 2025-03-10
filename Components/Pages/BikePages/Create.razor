@@ -51,7 +51,7 @@
 </div>
 
 <div>
-    <a href="/bikes">Back to List</a>
+    <a href="/">Back to List</a>
 </div>
 
 @code {
@@ -64,6 +64,6 @@
         using var context = DbFactory.CreateDbContext();
         context.Bike.Add(Bike);
         await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/bikes");
+        NavigationManager.NavigateTo("/");
     }
 }

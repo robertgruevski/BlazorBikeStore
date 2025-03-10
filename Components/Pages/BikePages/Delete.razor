@@ -43,7 +43,7 @@
         </dl>
         <EditForm method="post" Model="bike" OnValidSubmit="DeleteBike" FormName="delete" Enhance>
             <button type="submit" class="btn btn-danger" disabled="@(bike is null)">Delete</button> |
-            <a href="/bikes">Back to List</a>
+            <a href="/">Back to List</a>
         </EditForm>
     }
 </div>
@@ -70,6 +70,6 @@
         using var context = DbFactory.CreateDbContext();
         context.Bike.Remove(bike!);
         await context.SaveChangesAsync();
-        NavigationManager.NavigateTo("/bikes");
+        NavigationManager.NavigateTo("/");
     }
 }

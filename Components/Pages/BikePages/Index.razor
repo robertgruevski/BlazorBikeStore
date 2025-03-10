@@ -16,13 +16,12 @@
         <label for="txtSearch"> Search by Manufacturer</label>
         <input type="text" id="txtSearch" @bind="searchText" @bind:event="oninput" class="form-control" />
     </div>
+    <div class="col">
+        <a href="bikes/create" class="btn btn-primary mt-4">Create New</a>
+    </div>
 </div>
 
-<p>
-    <a href="bikes/create">Create New</a>
-</p>
-
-<QuickGrid Class="table" Items="FilteredBikes">
+<QuickGrid Class="table" Items="FilteredBikes" Pagination="pagination">
     <PropertyColumn Property="bike => bike.Manufacturer" />
     <PropertyColumn Property="bike => bike.Model" />
     <PropertyColumn Property="bike => bike.Year" />
@@ -36,13 +35,16 @@
         <a href="@($"bikes/delete?bikeid={bike.BikeId}")">Delete</a>
     </TemplateColumn>
 </QuickGrid>
+<Paginator State="pagination" />
 
 @code {
     private BlazorBikeStoreContext context = default!;
 
     private string searchText = string.Empty;
 
-    private IQueryable<Bike> FilteredBikes => context.Bike.Where(b => b.Manufacturer!.Contains(searchText));
+    private PaginationState pagination = new PaginationState { ItemsPerPage = 2 };
+
+    private IQueryable<Bike> FilteredBikes => context.Bike.Where(b => b.Manufacturer!.Contains(searchText) || b.Model!.Contains(searchText));
 
     protected override void OnInitialized()
     {
